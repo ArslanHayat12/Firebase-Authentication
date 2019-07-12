@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer, useEffect } from "react";
+import { reducer } from "./reducers/";
+import { initialContent, AppContext } from "./context/";
+import { Layout } from "antd";
+import "antd/dist/antd.css";
+import Router from "./routes/Router";
+import { routesList, defaultRoute } from "./routes/routes";
+import { auth } from "./config/index";
+const { Header, Footer } = Layout;
 
-const App: React.FC = () => {
+const App = () => {
+  const [content, dispatch] = useReducer(reducer, initialContent);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user:any) => {
+      dispatch({ type: "UPDATE_DATA", value: true,data:user&&user.email });
+      unsubscribe();
+    });
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Header />
+      <Layout.Content>
+        <AppContext.Provider value={{ content, dispatch }}>
+          <Router
+            routesList={routesList}
+            isSignedIn={content.value}
+            defaultRoute={defaultRoute}
+          />
+        </AppContext.Provider>
+      </Layout.Content>
+
+      <Footer />
+    </Layout>
   );
-}
+};
 
 export default App;
