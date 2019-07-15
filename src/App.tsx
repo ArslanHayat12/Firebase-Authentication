@@ -10,12 +10,19 @@ const { Header, Footer } = Layout;
 
 const App = () => {
   const [content, dispatch] = useReducer(reducer, initialContent);
+
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user:any) => {
-      dispatch({ type: "UPDATE_DATA", value: true,data:user&&user.email });
+    const unsubscribe = auth.onAuthStateChanged((user: any) => {
+      if (user)
+        dispatch({
+          type: "UPDATE_DATA",
+          value: true,
+          data: user && (user.email || user.phoneNumber)
+        });
       unsubscribe();
     });
   }, []);
+
   return (
     <Layout>
       <Header />

@@ -1,17 +1,23 @@
 import React, { useCallback, useContext, useState } from "react";
 import { withRouter } from "react-router-dom";
 import InputForm from "../InputForm";
-import { auth } from "../../config/index";
+import { auth, firebase } from "../../config/index";
 import { AppContext } from "../../context/";
 const SignIn = React.memo((props: any) => {
   const { dispatch } = useContext(AppContext);
   const [error, setError] = useState({ message: null });
- 
+  console.log(props.location.state);
   const signIn = useCallback((data: any) => {
+    console.log(props.location.state.verificationId, data);
+    const credential = firebase.auth.PhoneAuthProvider.credential(
+      props.location.state.verificationId,
+      data.code
+    );
+
     return auth
-      .signInWithEmailAndPassword(data.username, data.password)
+      .signInWithCredential(credential)
       .then((res: any) => {
-        dispatch({ type: "UPDATE_DATA", value: true,data:res.user && res.user.email });
+        dispatch({ type: "UPDATE_DATA", value: true,data:res.user && (res.user.email||res.user.phoneNumber) });
       })
       .catch((error: any) => {
         setError(error);
@@ -23,9 +29,10 @@ const SignIn = React.memo((props: any) => {
       redirect="/signup"
       message="Register Now"
       action={signIn}
-      authType="/phone"
-      authMessage="Signin through phone number"
       {...props}
+      authType="/signin"
+      authMessage="Signin through email and password"
+      auth="code"
       error={error && error.message}
     />
   );
