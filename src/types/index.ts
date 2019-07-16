@@ -4,3 +4,8 @@ export type AppContextType = {
     value?:any;
     data?:any;
   };
+
+  export type AppContextType2 = {
+    data?: any;
+    dispatchAction?: any;
+  };

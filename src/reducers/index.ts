@@ -11,3 +11,15 @@ export const reducer=(state:any, action:any)=>{
         return initialContent
     }
   };
+
+  export const reducerPrivate=(state:any, action:any)=>{
+    switch (action.type) {
+      case UPDATE_DATA:
+        return {
+          value: action.value,
+          data:action.data
+        }
+      default:
+        return initialContent
+    }
+  };

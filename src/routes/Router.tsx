@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useReducer } from "react";
 import { PrivateRoute } from "./PrivateRoutes";
 import {
   BrowserRouter as Router,
@@ -7,6 +7,8 @@ import {
   RouteProps,
   Switch
 } from "react-router-dom";
+import { reducerPrivate } from "../reducers/";
+import { initialContent, AppContext2 } from "../context/";
 interface IRoutesProps extends RouteProps {
   routesList?: any;
   isSignedIn?: boolean;
@@ -16,7 +18,7 @@ const Routes = (props: IRoutesProps) => {
   const isPathExists = props.routesList
     .map((x: any) => x.path)
     .includes(window.location.pathname);
-
+  const [data, dispatchAction] = useReducer(reducerPrivate, initialContent);
   return (
     <Router>
       {props.routesList.map((x: any, i: any) => {
@@ -26,13 +28,15 @@ const Routes = (props: IRoutesProps) => {
           return (
             <Switch key={i}>
               {x.private ? (
-                <PrivateRoute
-                  exact={true}
-                  path={path}
-                  component={component}
-                  isSignedIn={props.isSignedIn}
-                  failurePath={props.defaultRoute.failurePath}
-                />
+                <AppContext2.Provider value={{ data, dispatchAction }}>
+                  <PrivateRoute
+                    exact={true}
+                    path={path}
+                    component={component}
+                    isSignedIn={props.isSignedIn}
+                    failurePath={props.defaultRoute.failurePath}
+                  />
+                </AppContext2.Provider>
               ) : null}
             </Switch>
           );

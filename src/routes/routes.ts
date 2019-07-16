@@ -3,6 +3,7 @@ import SignUp from "./../components/Authentication/SignUp";
 import PhoneSignIn from "./../components/Authentication/PhoneSignIn";
 import CodeVerification from "./../components/Authentication/CodeVerification";
 import Dashboard from "./../components/Dashboard";
+import Users from "./../components/Users";
 
 export const routesList = [
   {
@@ -24,6 +25,11 @@ export const routesList = [
   {
     path: "/dashboard",
     component: Dashboard,
+    private: true
+  },
+  {
+    path: "/users",
+    component: Users,
     private: true
   }
 ];
