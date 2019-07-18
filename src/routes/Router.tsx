@@ -6,9 +6,10 @@ import {
   Redirect,
   RouteProps,
   Switch
+  
 } from "react-router-dom";
 import { reducerPrivate } from "../reducers/";
-import { initialContent, AppContext2 } from "../context/";
+import { initialContent, AfterAuthContext } from "../context/";
 interface IRoutesProps extends RouteProps {
   routesList?: any;
   isSignedIn?: boolean;
@@ -23,12 +24,11 @@ const Routes = (props: IRoutesProps) => {
     <Router>
       {props.routesList.map((x: any, i: any) => {
         const { path, component } = x;
-
         if (x.private || props.isSignedIn) {
           return (
             <Switch key={i}>
               {x.private ? (
-                <AppContext2.Provider value={{ data, dispatchAction }}>
+                <AfterAuthContext.Provider value={{ data, dispatchAction }}>
                   <PrivateRoute
                     exact={true}
                     path={path}
@@ -36,7 +36,7 @@ const Routes = (props: IRoutesProps) => {
                     isSignedIn={props.isSignedIn}
                     failurePath={props.defaultRoute.failurePath}
                   />
-                </AppContext2.Provider>
+                </AfterAuthContext.Provider>
               ) : null}
             </Switch>
           );

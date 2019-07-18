@@ -18,7 +18,12 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "typescript": "3.5.3"
+    "typescript": "3.5.3",
+    "@redgets/d3-viz": "^0.7.23",
+    "@redgets/hc-viz": "^0.7.23",
+    "@redgets/ui": "^0.7.23",
+    "@redgets/utils": "^0.7.6",
+    "d3": "^5.7.0"
   },
   "scripts": {
     "start": "react-scripts start",

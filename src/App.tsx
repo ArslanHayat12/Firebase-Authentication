@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import { reducer } from "./reducers/";
-import { initialContent, AppContext } from "./context/";
+import { initialContent, BeforeAuthContext } from "./context/";
 import { Layout } from "antd";
 import "antd/dist/antd.css";
 import Router from "./routes/Router";
@@ -21,18 +21,17 @@ const App = () => {
       unsubscribe();
     });
   }, []);
-console.log("===============")
   return (
     <Layout>
       <Header />
       <Layout.Content>
-        <AppContext.Provider value={{ content, dispatch }}>
+        <BeforeAuthContext.Provider value={{ content, dispatch }}>
           <Router
             routesList={routesList}
             isSignedIn={content.value}
             defaultRoute={defaultRoute}
           />
-        </AppContext.Provider>
+        </BeforeAuthContext.Provider>
       </Layout.Content>
 
       <Footer />

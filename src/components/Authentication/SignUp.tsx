@@ -1,5 +1,4 @@
 import React,{useCallback,useState} from "react";
-import { withRouter } from "react-router-dom";
 import InputForm from "../InputForm";
 import { auth } from "../../config/index";
 const SignUp = (props: any) => {
@@ -15,7 +14,6 @@ const SignUp = (props: any) => {
         setError(error);
       });
   }, []);
-
   return (
     <InputForm
       title="Sign Up"
@@ -28,4 +26,4 @@ const SignUp = (props: any) => {
   );
 };
 
-export default withRouter(SignUp);
+export default SignUp;

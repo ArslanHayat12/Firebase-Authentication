@@ -1,9 +1,8 @@
-import React, { useCallback, useContext, Fragment } from "react";
-import { withRouter } from "react-router-dom";
-import { AppContext2 } from "../context/";
+import React, {  useContext, Fragment } from "react";
+import { AfterAuthContext } from "../context/";
 
 const Users = (props:any) => {
-  const {data} = useContext(AppContext2);
+  const {data} = useContext(AfterAuthContext);
   
   return (
     <Fragment>
@@ -13,4 +12,4 @@ const Users = (props:any) => {
   );
 };
 
-export default withRouter(Users);
+export default Users;

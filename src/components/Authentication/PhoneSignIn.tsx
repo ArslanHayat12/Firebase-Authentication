@@ -1,8 +1,7 @@
 import React, { useCallback, useState, Fragment } from "react";
-import { withRouter } from "react-router-dom";
 import InputForm from "../InputForm";
 import { auth, firebase } from "../../config/index";
-const SignIn = React.memo((props: any) => {
+const PhoneSignIn = React.memo((props: any) => {
   const [error, setError] = useState({ message: null });
 
   const signIn = useCallback((data: any) => {
@@ -40,4 +39,4 @@ const SignIn = React.memo((props: any) => {
   );
 });
 
-export default withRouter(SignIn);
+export default PhoneSignIn;

@@ -105,7 +105,7 @@ const InputForm = Form.create<any>({ name: "form_in_modal" })((props: any) => {
           </a>
           <br />
           Or{" "}
-          <a onClick={() => props.history.push(props.redirect)}>
+          <a  onClick={() => props.history.push(props.redirect)}>
             {props.message}
           </a>
         </Form.Item>

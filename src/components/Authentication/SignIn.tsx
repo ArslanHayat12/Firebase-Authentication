@@ -1,10 +1,9 @@
 import React, { useCallback, useContext, useState } from "react";
-import { withRouter } from "react-router-dom";
 import InputForm from "../InputForm";
 import { auth } from "../../config/index";
-import { AppContext } from "../../context/";
+import { BeforeAuthContext } from "../../context/";
 const SignIn = React.memo((props: any) => {
-  const { dispatch } = useContext(AppContext);
+  const { dispatch } = useContext(BeforeAuthContext);
   const [error, setError] = useState({ message: null });
  
   const signIn = useCallback((data: any) => {
@@ -31,4 +30,4 @@ const SignIn = React.memo((props: any) => {
   );
 });
 
-export default withRouter(SignIn);
+export default SignIn;
