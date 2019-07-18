@@ -1,15 +1,15 @@
 import React, { useCallback, useContext, Fragment } from "react";
 import { BeforeAuthContext, AfterAuthContext } from "../context/";
 import { auth } from "../config/index";
-import { Container, GridLayout, Tile, Card, ProgressChart } from "@redgets/ui";
-import DynamicDataTable from "@redgets/ui/lib/DynamicDataTable";
-import {
-  LineChart,
-  BubbleMap,
-  AreaChart,
-  ColumnChart,
-  BarChart
-} from "@redgets/hc-viz";
+// import { Container, GridLayout, Tile, Card, ProgressChart } from "@redgets/ui";
+// import DynamicDataTable from "@redgets/ui/lib/DynamicDataTable";
+// import {
+//   LineChart,
+//   BubbleMap,
+//   AreaChart,
+//   ColumnChart,
+//   BarChart
+// } from "@redgets/hc-viz";
 const Dashboard = (props: any) => {
   const { content, dispatch } = useContext(BeforeAuthContext);
   const { dispatchAction } = useContext(AfterAuthContext);
@@ -30,7 +30,7 @@ const Dashboard = (props: any) => {
         Users{" "}
       </button>
 
-      <Container backgroundColor="#FAFAFA">
+      {/* <Container backgroundColor="#FAFAFA">
         <GridLayout rowHeight={5} noOfCols={4} width={1150}>
           <Tile
             data={{ id: 1, value: 20, unit: "k" }}
@@ -128,7 +128,7 @@ const Dashboard = (props: any) => {
             />
           </Card>
         </GridLayout>
-      </Container>
+      </Container> */}
     </Fragment>
   );
 };
