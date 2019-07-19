@@ -6,7 +6,6 @@ import {
   Redirect,
   RouteProps,
   Switch
-  
 } from "react-router-dom";
 import { reducerPrivate } from "../reducers/";
 import { initialContent, AfterAuthContext } from "../context/";
@@ -24,7 +23,7 @@ const Routes = (props: IRoutesProps) => {
     <Router>
       {props.routesList.map((x: any, i: any) => {
         const { path, component } = x;
-        if (x.private || props.isSignedIn) {
+        if (x.private && props.isSignedIn) {
           return (
             <Switch key={i}>
               {x.private ? (
@@ -48,10 +47,14 @@ const Routes = (props: IRoutesProps) => {
           );
         }
       })}
-      {!isPathExists ? <Redirect to={props.defaultRoute.failurePath} /> : null}
+      {!isPathExists && props.isSignedIn !== undefined ? (
+        <Redirect to={props.defaultRoute.failurePath} />
+      ) : null}
       {props.isSignedIn ? (
         <Redirect to={props.defaultRoute.successPath} />
-      ) : null}
+      ) : props.isSignedIn === undefined ? null : (
+        <Redirect to={props.defaultRoute.failurePath} />
+      )}
     </Router>
   );
 };
