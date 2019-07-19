@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect,useContext } from "react";
+import React, { useReducer, useEffect, useContext } from "react";
 import { reducer } from "../reducers/";
 import { initialContent, BeforeAuthContext } from "../context/";
 import { Layout } from "antd";
@@ -10,14 +10,16 @@ const { Header, Footer } = Layout;
 const BeforeAuth = (props: any) => {
   const [content, dispatch] = useReducer(reducer, initialContent);
   useEffect(() => {
-    props.checkAuth((data: any) => {
-      dispatch({
-        value: true,
-        data: data
+    props.initialAuthCheck &&
+      props.initialAuthCheck((data: any) => {
+        dispatch({
+          type: "UPDATE_DATA",
+          isSignedIn: true,
+          data: data
+        });
       });
-    });
   }, []);
-
+  {console.log(content)}
   return (
     <Layout>
       <Header />
@@ -25,8 +27,10 @@ const BeforeAuth = (props: any) => {
         <BeforeAuthContext.Provider value={{ content, dispatch }}>
           <Router
             routesList={routesList}
-            isSignedIn={content.value}
+            isSignedIn={content.isSignedIn}
             defaultRoute={defaultRoute}
+            initialContent={props.initialContent}
+            reducerPrivate={props.reducerPrivate}
           />
         </BeforeAuthContext.Provider>
       </Layout.Content>
@@ -35,5 +39,6 @@ const BeforeAuth = (props: any) => {
     </Layout>
   );
 };
-export const useBeforeAuth=useContext(BeforeAuthContext);
+
 export default BeforeAuth;
+export const useBeforeAuth = () => useContext(BeforeAuthContext);

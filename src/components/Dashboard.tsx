@@ -1,5 +1,5 @@
-import React, { useCallback, useContext, Fragment } from "react";
-import { BeforeAuthContext, AfterAuthContext } from "../context/";
+import React, { useCallback, Fragment } from "react";
+import { useAfterAuth } from "../AuthProviders/AfterAuth";
 import { auth } from "../config/index";
 // import { Container, GridLayout, Tile, Card, ProgressChart } from "@redgets/ui";
 // import DynamicDataTable from "@redgets/ui/lib/DynamicDataTable";
@@ -11,19 +11,19 @@ import { auth } from "../config/index";
 //   BarChart
 // } from "@redgets/hc-viz";
 const Dashboard = (props: any) => {
-  const { content, dispatch } = useContext(BeforeAuthContext);
-  const { dispatchAction } = useContext(AfterAuthContext);
-  const logout = useCallback(() => {
+  const { data,dispatchAction,logout,content } = useAfterAuth();
+  const logoutAction = useCallback(() => {
     auth.signOut();
-    dispatch({ type: "UPDATE_DATA", value: false });
+    logout();
   }, []);
   return (
     <Fragment>
       <h1>Here in Dashboard {JSON.stringify(content, null, 3)}</h1>
-      <button onClick={logout}>Logout </button>
+      <button onClick={logoutAction}>Logout </button>
       <button
         onClick={() => {
           dispatchAction({ type: "UPDATE_DATA", value: "I am here" });
+          console.log()
           props.history.push("/users");
         }}
       >

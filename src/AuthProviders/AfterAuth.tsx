@@ -1,15 +1,17 @@
-import React, { useReducer,useState, useContext } from "react";
-import { reducerPrivate } from "../reducers/";
-import { initialContent, AfterAuthContext } from "../context/";
+import React, { useContext, useCallback } from "react";
+import { AfterAuthContext } from "../context/";
+import { useBeforeAuth } from "./BeforeAuth";
 
 const AfterAuth = ({ children, data, dispatchAction }: any) => {
-  
-  //
-  //const [data, dispatchAction] = useState(initialContent);
+  const { dispatch,content } = useBeforeAuth();
+  const logout = useCallback(() => {
+    dispatch({ type: "UPDATE_DATA",  isSignedIn: false, });
+  }, []);
+
   return (
-      <AfterAuthContext.Provider value={{ data, dispatchAction }}>
-        {children}
-      </AfterAuthContext.Provider>
+    <AfterAuthContext.Provider value={{ data, content, dispatchAction, logout }}>
+      {children}
+    </AfterAuthContext.Provider>
   );
 };
 

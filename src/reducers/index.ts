@@ -4,7 +4,7 @@ export const reducer=(state:any, action:any)=>{
     switch (action.type) {
       case UPDATE_DATA:
         return {
-          value: action.value,
+          isSignedIn: action.isSignedIn,
           data:action.data
         }
       default:
@@ -15,9 +15,11 @@ export const reducer=(state:any, action:any)=>{
   export const reducerPrivate=(state:any, action:any)=>{
     switch (action.type) {
       case UPDATE_DATA:
+        console.log(action)
         return {
-          value: action.value,
-          data:action.data
+          value: action.value||state.value,
+          data:action.data||state.data,
+          
         }
       default:
         return initialContent

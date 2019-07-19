@@ -1,37 +1,32 @@
-import React, { useReducer, useEffect } from "react";
-import { reducer } from "./reducers/";
-import { initialContent, BeforeAuthContext } from "./context/";
+import React, { useReducer, useEffect, useCallback } from "react";
 import { Layout } from "antd";
 import "antd/dist/antd.css";
-import Router from "./routes/Router";
 import { routesList, defaultRoute } from "./routes/routes";
 import { auth } from "./config/index";
+import BeforeAuth from "./AuthProviders/BeforeAuth";
+import {initialContent} from "./context/";
+import { reducerPrivate } from "./reducers/";
 const { Header, Footer } = Layout;
 
 const App = () => {
-  const [content, dispatch] = useReducer(reducer, initialContent);
-  useEffect(() => {
+  const initialAuthCheck = (callback: any) => {
     const unsubscribe = auth.onAuthStateChanged((user: any) => {
-      if (user)
-        dispatch({
-          type: "UPDATE_DATA",
-          value: true,
-          data: user && (user.email || user.phoneNumber)
-        });
+      if (user) callback(user && (user.email || user.phoneNumber));
       unsubscribe();
     });
-  }, []);
+  };
+
   return (
     <Layout>
       <Header />
       <Layout.Content>
-        <BeforeAuthContext.Provider value={{ content, dispatch }}>
-          <Router
-            routesList={routesList}
-            isSignedIn={content.value}
-            defaultRoute={defaultRoute}
-          />
-        </BeforeAuthContext.Provider>
+        <BeforeAuth
+          routesList={routesList}
+          defaultRoute={defaultRoute}
+          initialAuthCheck={initialAuthCheck}
+          initialContent={initialContent}
+          reducerPrivate={reducerPrivate}
+        />
       </Layout.Content>
 
       <Footer />

@@ -1,8 +1,8 @@
 import React, {  useContext, Fragment } from "react";
-import { AfterAuthContext } from "../context/";
+import { useAfterAuth } from "../AuthProviders/AfterAuth";
 
 const Users = (props:any) => {
-  const {data} = useContext(AfterAuthContext);
+  const {data} = useAfterAuth();
   
   return (
     <Fragment>

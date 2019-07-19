@@ -1,61 +1,63 @@
-import React, { useReducer } from "react";
+import React, { useReducer, Fragment } from "react";
 import { PrivateRoute } from "./PrivateRoutes";
 import {
   BrowserRouter as Router,
   Route,
   Redirect,
-  RouteProps,
   Switch
 } from "react-router-dom";
-import { reducerPrivate } from "../reducers/";
-import { initialContent, AfterAuthContext } from "../context/";
-interface IRoutesProps extends RouteProps {
-  routesList?: any;
-  isSignedIn?: boolean;
-  defaultRoute?: any;
-}
-const Routes = (props: IRoutesProps) => {
-  const isPathExists = props.routesList
-    .map((x: any) => x.path)
-    .includes(window.location.pathname);
+import AfterAuth from "../AuthProviders/AfterAuth";
+import { RoutesPropsInterface } from "../interfaces/";
+import { isPathExists } from "../utils/";
+
+const Routes = (props: RoutesPropsInterface) => {
+  const {
+    routesList,
+    isSignedIn,
+    defaultRoute,
+    reducerPrivate,
+    initialContent
+  } = props;
   const [data, dispatchAction] = useReducer(reducerPrivate, initialContent);
   return (
-    <Router>
-      {props.routesList.map((x: any, i: any) => {
-        const { path, component } = x;
-        if (x.private && props.isSignedIn) {
-          return (
-            <Switch key={i}>
-              {x.private ? (
-                <AfterAuthContext.Provider value={{ data, dispatchAction }}>
-                  <PrivateRoute
-                    exact={true}
-                    path={path}
-                    component={component}
-                    isSignedIn={props.isSignedIn}
-                    failurePath={props.defaultRoute.failurePath}
-                  />
-                </AfterAuthContext.Provider>
-              ) : null}
-            </Switch>
-          );
-        } else {
-          return (
-            <Switch key={i}>
-              <Route exact={true} path={path} component={component} />
-            </Switch>
-          );
-        }
-      })}
-      {!isPathExists && props.isSignedIn !== undefined ? (
-        <Redirect to={props.defaultRoute.failurePath} />
-      ) : null}
-      {props.isSignedIn ? (
-        <Redirect to={props.defaultRoute.successPath} />
-      ) : props.isSignedIn === undefined ? null : (
-        <Redirect to={props.defaultRoute.failurePath} />
-      )}
-    </Router>
+    <Fragment>
+      <Router>
+        {routesList.map((x: any, i: any) => {
+          const { path, component } = x;
+          if (x.private && isSignedIn) {
+            return (
+              <Switch key={i}>
+                {x.private ? (
+                  <AfterAuth data={data} dispatchAction={dispatchAction}>
+                    <PrivateRoute
+                      exact={true}
+                      path={path}
+                      component={component}
+                      isSignedIn={isSignedIn}
+                      failurePath={defaultRoute.failurePath}
+                    />
+                  </AfterAuth>
+                ) : null}
+              </Switch>
+            );
+          } else {
+            return (
+              <Switch key={i}>
+                <Route exact={true} path={path} component={component} />
+              </Switch>
+            );
+          }
+        })}
+        {!isPathExists(routesList, window.location.pathname) ? (
+          <Redirect to={defaultRoute.failurePath} />
+        ) : null}
+        {isSignedIn ? (
+          <Redirect to={defaultRoute.successPath} />
+        ) : (
+          <Redirect to={defaultRoute.failurePath} />
+        )}
+      </Router>
+    </Fragment>
   );
 };
 

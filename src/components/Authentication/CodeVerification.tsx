@@ -14,7 +14,7 @@ const SignIn = React.memo((props: any) => {
     return auth
       .signInWithCredential(credential)
       .then((res: any) => {
-        dispatch({ type: "UPDATE_DATA", value: true,data:res.user && (res.user.email||res.user.phoneNumber) });
+        dispatch({ type: "UPDATE_DATA", isSignedIn: true,data:res.user && (res.user.email||res.user.phoneNumber) });
       })
       .catch((error: any) => {
         setError(error);
