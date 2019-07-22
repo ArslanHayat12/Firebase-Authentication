@@ -9,7 +9,7 @@ import { reducerPrivate } from "./reducers/";
 const { Header, Footer } = Layout;
 
 const App = () => {
-  const initialAuthCheck = (callback: any) => {
+  const onLoad = (callback: any) => {
     const unsubscribe = auth.onAuthStateChanged((user: any) => {
       if (user) callback(user && (user.email || user.phoneNumber));
       unsubscribe();
@@ -23,7 +23,7 @@ const App = () => {
         <BeforeAuth
           routesList={routesList}
           defaultRoute={defaultRoute}
-          initialAuthCheck={initialAuthCheck}
+          onLoad={onLoad}
           initialContent={initialContent}
           reducerPrivate={reducerPrivate}
         />

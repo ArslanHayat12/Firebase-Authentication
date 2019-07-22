@@ -10,8 +10,8 @@ const { Header, Footer } = Layout;
 const BeforeAuth = (props: any) => {
   const [content, dispatch] = useReducer(reducer, initialContent);
   useEffect(() => {
-    props.initialAuthCheck &&
-      props.initialAuthCheck((data: any) => {
+    props.onLoad &&
+      props.onLoad((data: any) => {
         dispatch({
           type: "UPDATE_DATA",
           isSignedIn: true,
