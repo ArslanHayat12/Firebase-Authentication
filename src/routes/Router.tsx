@@ -16,26 +16,55 @@ const Routes = (props: RoutesPropsInterface) => {
     isSignedIn,
     defaultRoute,
     reducerPrivate,
-    initialContent
+    initialContent,
+    showFooterAfterAuth,
+    showHeaderAfterAuth,
+    footerType,
+    headerType,
+    wrappContent,
+    wrappLayout,
+    wrappLayoutClass,
+    wrappContentClass
+    
   } = props;
+  
   const [data, dispatchAction] = useReducer(reducerPrivate, initialContent);
+  const index = routesList.findIndex((x: any) => x.private);
   return (
     <Fragment>
       <Router>
         {routesList.map((x: any, i: any) => {
           const { path, component } = x;
+
           if (x.private && isSignedIn) {
             return (
               <Switch key={i}>
                 {x.private ? (
                   <AfterAuth data={data} dispatchAction={dispatchAction}>
-                    <PrivateRoute
-                      exact={true}
-                      path={path}
-                      component={component}
-                      isSignedIn={isSignedIn}
-                      failurePath={defaultRoute.failurePath}
-                    />
+                    {index === i ? (
+                      <Fragment>
+                      
+                        <PrivateRoute
+                          exact={true}
+                          path={path}
+                          component={component}
+                          isSignedIn={isSignedIn}
+                          failurePath={defaultRoute.failurePath}
+                        />
+                         {/* {index === i && showFooterAfterAuth && footerType === "dynamic"
+                      ? showFooterAfterAuth()
+                      : null} */}
+                      </Fragment>
+                    ) : (
+                      <PrivateRoute
+                        exact={true}
+                        path={path}
+                        component={component}
+                        isSignedIn={isSignedIn}
+                        failurePath={defaultRoute.failurePath}
+                      />
+                    )}
+                   
                   </AfterAuth>
                 ) : null}
               </Switch>

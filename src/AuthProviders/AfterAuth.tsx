@@ -3,13 +3,11 @@ import { AfterAuthContext } from "../context/";
 import { useBeforeAuth } from "./BeforeAuth";
 
 const AfterAuth = ({ children, data, dispatchAction }: any) => {
-  const { dispatch,content } = useBeforeAuth();
-  const logout = useCallback(() => {
-    dispatch({ type: "UPDATE_DATA",  isSignedIn: false, });
-  }, []);
+  const {content } = useBeforeAuth();
+ 
 
   return (
-    <AfterAuthContext.Provider value={{ data, content, dispatchAction, logout }}>
+    <AfterAuthContext.Provider value={{ data, content, dispatchAction }}>
       {children}
     </AfterAuthContext.Provider>
   );

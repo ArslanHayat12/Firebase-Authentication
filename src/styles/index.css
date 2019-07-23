@@ -1,15 +1,29 @@
 #components-form-demo-normal-login .login-form {
-    max-width: 300px;
-  }
-  #components-form-demo-normal-login .login-form-forgot {
-    float: right;
-  }
-  #components-form-demo-normal-login .login-form-button {
-    width: 100%;
-  }
-  .center {
-    margin: auto;
-    width: 30%;
-    padding: 10px;
-    background: azure;
-  }
+  max-width: 300px;
+}
+#components-form-demo-normal-login .login-form-forgot {
+  float: right;
+}
+#components-form-demo-normal-login .login-form-button {
+  width: 100%;
+}
+.center {
+  margin: auto;
+  width: 30%;
+  padding: 10px;
+  background: azure;
+}
+.ant-layout-header {
+  background: cornflowerblue;
+}
+.ant-layout-footer {
+  background: cornflowerblue;
+}
+.content {
+  overflow-y: scroll;
+  height: 800px;
+  background: white;
+}
+.layout{
+  height: 100vh;
+}

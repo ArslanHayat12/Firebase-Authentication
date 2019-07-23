@@ -1,134 +1,94 @@
-import React, { useCallback, Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useAfterAuth } from "../AuthProviders/AfterAuth";
-import { auth } from "../config/index";
-// import { Container, GridLayout, Tile, Card, ProgressChart } from "@redgets/ui";
-// import DynamicDataTable from "@redgets/ui/lib/DynamicDataTable";
-// import {
-//   LineChart,
-//   BubbleMap,
-//   AreaChart,
-//   ColumnChart,
-//   BarChart
-// } from "@redgets/hc-viz";
+import { db } from "../config/index";
+import { List, Card, Row } from "antd";
 const Dashboard = (props: any) => {
-  const { data,dispatchAction,logout,content } = useAfterAuth();
-  const logoutAction = useCallback(() => {
-    auth.signOut();
-    logout();
+  const { dispatchAction, content } = useAfterAuth();
+  const [quotes, setQuotes] = useState([]);
+  // const logoutAction = useCallback(() => {
+  //   auth.signOut();
+  //   logout();
+  // }, []);
+  useEffect(() => {
+    db.ref()
+      .limitToFirst(30)
+      .on("value", (snapshot: any) => {
+        setQuotes(snapshot.val());
+      });
   }, []);
   return (
     <Fragment>
-      <h1>Here in Dashboard {JSON.stringify(content, null, 3)}</h1>
-      <button onClick={logoutAction}>Logout </button>
-      <button
-        onClick={() => {
-          dispatchAction({ type: "UPDATE_DATA", value: "I am here" });
-          console.log()
-          props.history.push("/users");
-        }}
-      >
-        Users{" "}
-      </button>
-
-      {/* <Container backgroundColor="#FAFAFA">
-        <GridLayout rowHeight={5} noOfCols={4} width={1150}>
-          <Tile
-            data={{ id: 1, value: 20, unit: "k" }}
-            // url="http://localhost:3009/threatIps"
-            valueColor="#FF0000"
-            label="Threat IP's"
-            dropdownContent={<div>Thats a dropdown folks</div>}
-            dropdownProps={{ title: "O365" }}
-          />
-          <Tile
-            // url="http://localhost:3009/radius"
-            data={{ value: 3 }}
-            valueColor="#000000"
-            label="Average Radius"
-          />
-          <Tile
-            // url="http://localhost:3009/data/used"
-            data={{ id: 1, value: 1024, unit: "GB" }}
-            label="Used Data"
-            valueColor="#78ba5d"
-            dropdownContent="Some used data"
-          />
-          <Tile
-            // url="http://localhost:3009/data/total"
-            data={{ id: 1, value: 125, unit: "TB" }}
-            valueColor="green"
-            label="Total Data"
-            dropdownContent="This depicts the total data available"
-          />
-        </GridLayout>
-        <GridLayout rowHeight={14} width={1150}>
-          <Card title="Bar Chart">
-            <BarChart
-              data={[
-                {
-                  category: "bilal.shafi@emumba.com",
-                  data: [
-                    { id: 0, yValue: 10, seriesId: "redSeries" },
-                    { id: 1, yValue: 10, seriesId: "yellowSeries" },
-                    { id: 2, yValue: 10, seriesId: "greenSeries" }
-                  ]
-                },
-                {
-                  category: "ahmed.waleed@emumba.com",
-                  data: [
-                    { id: 0, yValue: 20, seriesId: "redSeries" },
-                    { id: 1, yValue: 10, seriesId: "yellowSeries" },
-                    { id: 2, yValue: 20, seriesId: "greenSeries" }
-                  ]
-                },
-                {
-                  category: "irfan.ali@emumba.com",
-                  data: [
-                    { id: 0, yValue: 30, seriesId: "redSeries" },
-                    { id: 1, yValue: 30, seriesId: "yellowSeries" },
-                    { id: 2, yValue: 10, seriesId: "greenSeries" }
-                  ]
-                },
-                {
-                  category: "bilal.shafi@emumba.com",
-                  data: [
-                    { id: 0, yValue: 10, seriesId: "redSeries" },
-                    { id: 1, yValue: 10, seriesId: "yellowSeries" },
-                    { id: 2, yValue: 10, seriesId: "greenSeries" }
-                  ]
-                },
-                {
-                  category: "ahmed.waleed@emumba.com",
-                  data: [
-                    { id: 0, yValue: 20, seriesId: "redSeries" },
-                    { id: 1, yValue: 10, seriesId: "yellowSeries" },
-                    { id: 2, yValue: 20, seriesId: "greenSeries" }
-                  ]
-                },
-                {
-                  category: "irfan.ali@emumba.com",
-                  data: [
-                    { id: 0, yValue: 30, seriesId: "redSeries" },
-                    { id: 1, yValue: 30, seriesId: "yellowSeries" },
-                    { id: 2, yValue: 10, seriesId: "greenSeries" }
-                  ]
-                }
-              ]}
-              labels={{
-                redSeries: "Owner",
-                yellowSeries: "View",
-                greenSeries: "Edit"
+      {/* <h1>Logged In with: {JSON.stringify(content&&content.data, null, 3)}</h1> */}
+      <Row gutter={20}>
+        <List
+          grid={{
+            gutter: 20,
+            xs: 1,
+            sm: 2,
+            md: 3,
+            lg: 3,
+            xl: 4,
+            xxl: 6
+          }}
+          dataSource={
+            quotes.length === 0
+              ? [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18,
+                  19,
+                  20,
+                  21,
+                  22,
+                  23,
+                  24
+                ]
+              : quotes
+          }
+          renderItem={(item: any) => (
+            <List.Item
+              style={{ margin: "20px" }}
+              onClick={() => {
+                dispatchAction({ type: "UPDATE_DATA", data: item.quoteText });
+                props.history.push("/quotes");
               }}
-            />
-          </Card>
-          <Card title="Bubble Map" widthUnits={2}>
-            <BubbleMap
-              url="https://redgets-api.herokuapp.com/geographic-user-…"
-              radiusKey="Activities"
-            />
-          </Card>
-        </GridLayout>
-      </Container> */}
+            >
+              <Card
+                loading={quotes.length === 0}
+                title={
+                  quotes.length === 0
+                    ? "Loading ..."
+                    : item.quoteAuthor || "Unknown"
+                }
+                bordered={true}
+                type={"inner"}
+                style={{
+                  height: 200,
+                  background:
+                    "#" + (((1 << 24) * Math.random()) | 0).toString(16)
+                }}
+              >
+                <h3>{item.quoteText}</h3>
+              </Card>
+            </List.Item>
+          )}
+        />
+      </Row>
     </Fragment>
   );
 };

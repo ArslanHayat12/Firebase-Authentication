@@ -3,12 +3,9 @@ export type BeforeAuthContextType = {
     dispatch?: any;
     isSignedIn?:any;
     data?:any;
+    logout?: any;
   };
 
-  export type AfterAuthContextType = {
-    data?: any;
+  export type AfterAuthContextType = BeforeAuthContextType & {
     dispatchAction?: any;
-    logout?: any;
-    content?: any;
-    signIn?:any;
   };

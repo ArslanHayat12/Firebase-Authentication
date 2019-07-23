@@ -7,7 +7,7 @@ const config = {
   authDomain: "authentication-de0dd.firebaseapp.com",
   databaseURL: "https://authentication-de0dd.firebaseio.com",
   projectId: "authentication-de0dd",
-  storageBucket: "",
+  storageBucket: "authentication-de0dd.appspot.com",
   messagingSenderId: "666664879122",
   appId: "1:666664879122:web:4b85853c796d73bc"
 };
