@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useAfterAuth } from "../AuthProviders/AfterAuth";
 import { db } from "../config/index";
-import { List, Card, Row } from "antd";
+import { Card } from "antd";
 import "./../styles/index.css";
 const Dashboard = (props: any) => {
   const { dispatchAction, content } = useAfterAuth();
@@ -12,7 +12,7 @@ const Dashboard = (props: any) => {
   // }, []);
   useEffect(() => {
     db.ref()
-      .limitToFirst(30)
+      .limitToFirst(100)
       .on("value", (snapshot: any) => {
         setQuotes(snapshot.val());
       });

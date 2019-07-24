@@ -19,31 +19,28 @@ const Routes = (props: RoutesPropsInterface) => {
     initialContent,
     showFooterAfterAuth,
     showHeaderAfterAuth,
-    footerType,
-    headerType,
-    wrappContent,
-    wrappLayout,
+    headerFooterType,
     wrappLayoutClass,
     wrappContentClass
-    
   } = props;
-  
+
   const [data, dispatchAction] = useReducer(reducerPrivate, initialContent);
-  const index = routesList.findIndex((x: any) => x.private);
   return (
     <Fragment>
-      <Router>
-        {routesList.map((x: any, i: any) => {
-          const { path, component } = x;
+      <AfterAuth data={data} dispatchAction={dispatchAction}>
+        <props.wrappLayout className={wrappLayoutClass || undefined}>
+          {isSignedIn && showHeaderAfterAuth && headerFooterType === "dynamic"
+            ? showHeaderAfterAuth()
+            : null}
+          <props.wrappContent className={wrappContentClass || undefined}>
+            <Router>
+              {routesList.map((x: any, i: any) => {
+                const { path, component } = x;
 
-          if (x.private && isSignedIn) {
-            return (
-              <Switch key={i}>
-                {x.private ? (
-                  <AfterAuth data={data} dispatchAction={dispatchAction}>
-                    {index === i ? (
-                      <Fragment>
-                      
+                if (x.private && isSignedIn) {
+                  return (
+                    <Switch key={i}>
+                      {x.private ? (
                         <PrivateRoute
                           exact={true}
                           path={path}
@@ -51,41 +48,36 @@ const Routes = (props: RoutesPropsInterface) => {
                           isSignedIn={isSignedIn}
                           failurePath={defaultRoute.failurePath}
                         />
-                         {/* {index === i && showFooterAfterAuth && footerType === "dynamic"
+                      ) : /* {showFooterAfterAuth && footerType === "dynamic"
                       ? showFooterAfterAuth()
-                      : null} */}
-                      </Fragment>
-                    ) : (
-                      <PrivateRoute
-                        exact={true}
-                        path={path}
-                        component={component}
-                        isSignedIn={isSignedIn}
-                        failurePath={defaultRoute.failurePath}
-                      />
-                    )}
-                   
-                  </AfterAuth>
-                ) : null}
-              </Switch>
-            );
-          } else {
-            return (
-              <Switch key={i}>
-                <Route exact={true} path={path} component={component} />
-              </Switch>
-            );
-          }
-        })}
-        {!isPathExists(routesList, window.location.pathname) ? (
-          <Redirect to={defaultRoute.failurePath} />
-        ) : null}
-        {isSignedIn ? (
-          <Redirect to={defaultRoute.successPath} />
-        ) : (
-          <Redirect to={defaultRoute.failurePath} />
-        )}
-      </Router>
+                      : null} */
+
+                      null}
+                    </Switch>
+                  );
+                } else {
+                  return (
+                    <Switch key={i}>
+                      <Route exact={true} path={path} component={component} />
+                    </Switch>
+                  );
+                }
+              })}
+              {!isPathExists(routesList, window.location.pathname) ? (
+                <Redirect to={defaultRoute.failurePath} />
+              ) : null}
+              {isSignedIn ? (
+                <Redirect to={defaultRoute.successPath} />
+              ) : (
+                <Redirect to={defaultRoute.failurePath} />
+              )}
+            </Router>
+          </props.wrappContent>
+          {isSignedIn && showFooterAfterAuth && headerFooterType === "dynamic"
+            ? showFooterAfterAuth()
+            : null}
+        </props.wrappLayout>
+      </AfterAuth>
     </Fragment>
   );
 };

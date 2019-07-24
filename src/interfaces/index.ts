@@ -7,8 +7,7 @@ export interface RoutesPropsInterface extends RouteProps {
   initialContent: any;
   reducerPrivate: any;
   onLoad?: (callback: any) => void;
-  headerType?:string;
-  footerType?:string;
+  headerFooterType?:string;
   showHeaderAfterAuth?: (data?:any) => void;
   showFooterAfterAuth?: () => void;
   wrappContent: React.ComponentClass<BasicProps, any> | string;

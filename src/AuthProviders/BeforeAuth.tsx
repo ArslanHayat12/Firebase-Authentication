@@ -14,8 +14,7 @@ const BeforeAuth = (props: RoutesPropsBeforeAuthInterface) => {
     showHeaderAfterAuth,
     reducerPrivate,
     wrappContentClass,
-    headerType,
-    footerType
+    headerFooterType,
   } = props;
   useEffect(() => {
     onLoad &&
@@ -32,9 +31,9 @@ const BeforeAuth = (props: RoutesPropsBeforeAuthInterface) => {
   }, []);
   return (
     <BeforeAuthContext.Provider value={{ content, dispatch, logout }}>
-      {headerType !== "dynamic" || footerType !== "dynamic"? (
+      {headerFooterType !== "dynamic" || headerFooterType !== "dynamic"? (
         <props.wrappLayout className={wrappLayoutClass || undefined}>
-          {content.isSignedIn && showHeaderAfterAuth && headerType !== "dynamic"
+          {content.isSignedIn && showHeaderAfterAuth && headerFooterType !== "dynamic"
             ? showHeaderAfterAuth()
             : null}
           <props.wrappContent className={wrappContentClass || undefined}>
@@ -46,12 +45,11 @@ const BeforeAuth = (props: RoutesPropsBeforeAuthInterface) => {
               reducerPrivate={reducerPrivate}
               showHeaderAfterAuth={showHeaderAfterAuth}
               showFooterAfterAuth={showFooterAfterAuth}
-              headerType={headerType}
-              footerType={footerType}
+              headerFooterType={headerFooterType}
               {...props}
             />
           </props.wrappContent>
-          {content.isSignedIn && showFooterAfterAuth && footerType !== "dynamic"
+          {content.isSignedIn && showFooterAfterAuth && headerFooterType !== "dynamic"
             ? showFooterAfterAuth()
             : null}
         </props.wrappLayout>
@@ -64,8 +62,7 @@ const BeforeAuth = (props: RoutesPropsBeforeAuthInterface) => {
           reducerPrivate={reducerPrivate}
           showHeaderAfterAuth={showHeaderAfterAuth}
           showFooterAfterAuth={showFooterAfterAuth}
-          headerType={headerType}
-          footerType={footerType}
+          headerFooterType={headerFooterType}
           {...props}
         />
       )}

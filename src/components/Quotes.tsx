@@ -1,4 +1,4 @@
-import React, {  useContext, Fragment } from "react";
+import React, { Fragment } from "react";
 import { useAfterAuth } from "../AuthProviders/AfterAuth";
 
 const Quotes = (props:any) => {

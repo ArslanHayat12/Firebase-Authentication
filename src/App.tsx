@@ -2,6 +2,7 @@ import React,{useCallback} from "react";
 import { routesList, defaultRoute } from "./routes/routes";
 import { auth } from "./config/index";
 import BeforeAuth, { useBeforeAuth } from "./AuthProviders/BeforeAuth";
+import { useAfterAuth } from "./AuthProviders/AfterAuth";
 import { initialContent } from "./context/";
 import { reducerPrivate } from "./reducers/";
 import { Layout,Button } from "antd";
@@ -10,6 +11,7 @@ import "./styles/index.css";
 const { Header, Footer } = Layout;
 const Head=({res}:any)=>{
   const {  logout,content } = useBeforeAuth();
+  const {  data } = useAfterAuth();
   const logoutAction = useCallback(() => {
     auth.signOut();
     logout();
@@ -17,7 +19,8 @@ const Head=({res}:any)=>{
   return(
     <Header>
         <span style={{float:"left",color:"white"}}>  Quotes App </span>
-        <span style={{float:"right",color:"white"}}> {content.data}<Button onClick={logoutAction}>Logout </Button> </span>
+        <span style={{float:"right",color:"white"}}>{data&&data.data?JSON.stringify(data.data):"Static"}</span>
+        <span style={{float:"right",color:"white"}}> {content&&JSON.stringify(content.data)}<Button onClick={logoutAction}>Logout </Button> </span>
        
     </Header>
   )
@@ -43,8 +46,7 @@ const App = () => {
       wrappContent={Layout.Content}
       wrappLayoutClass="layout"
       wrappContentClass="content"
-      headerType="static"
-      footerType="static"
+      headerFooterType="dynamic"
     />
   );
 };

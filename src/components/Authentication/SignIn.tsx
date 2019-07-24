@@ -6,7 +6,6 @@ const SignIn = React.memo((props: any) => {
   
   const { dispatch } = useBeforeAuth();
   const [error, setError] = useState({ message: null });
-
   const signIn = useCallback((data: any) => {
     return auth
       .signInWithEmailAndPassword(data.username, data.password)
