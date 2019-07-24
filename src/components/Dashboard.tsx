@@ -17,103 +17,64 @@ const Dashboard = (props: any) => {
         setQuotes(snapshot.val());
       });
   }, []);
+  const quotesData =
+    quotes.length === 0
+      ? [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ]
+      : quotes;
   return (
     <Fragment>
-       <div className="main">
-        {quotes &&
-          quotes.length > 0 &&
-          quotes.map((val:any) => (
+      <div className="main">
+        {quotesData &&
+          quotesData.length > 0 &&
+          quotesData.map((item: any) => (
             <Card
-              title={val.quoteAuthor}
+              loading={quotes.length === 0}
+              title={
+                quotes.length === 0
+                  ? "Loading ..."
+                  : item.quoteAuthor || "Unknown"
+              }
               extra={<a href="#">More</a>}
               style={{
-                height: 200,
-                width:"23%",
-                margin:"1%",
-                background:
-                  "#" + (((1 << 24) * Math.random()) | 0).toString(16)
+                height: "300",
+                width: "23%",
+                margin: "1%",
+                background: "#" + (((1 << 24) * Math.random()) | 0).toString(16)
               }}
-              onClick={() => {
-                dispatchAction({ type: "UPDATE_DATA", data: val.quoteText });
-                props.history.push("/quotes");
-              }}
-            >
-              <p>{val.quoteText}</p>
-            </Card>
-          ))}
-      
-      </div>
-      {/* <h1>Logged In with: {JSON.stringify(content&&content.data, null, 3)}</h1> */}
-      {/* <Row gutter={20}>
-        <List
-          grid={{
-            gutter: 20,
-            xs: 1,
-            sm: 2,
-            md: 3,
-            lg: 3,
-            xl: 4,
-            xxl: 6
-          }}
-          dataSource={
-            quotes.length === 0
-              ? [
-                  1,
-                  2,
-                  3,
-                  4,
-                  5,
-                  6,
-                  7,
-                  8,
-                  9,
-                  10,
-                  11,
-                  12,
-                  13,
-                  14,
-                  15,
-                  16,
-                  17,
-                  18,
-                  19,
-                  20,
-                  21,
-                  22,
-                  23,
-                  24
-                ]
-              : quotes
-          }
-          renderItem={(item: any) => (
-            <List.Item
-              style={{ margin: "20px" }}
               onClick={() => {
                 dispatchAction({ type: "UPDATE_DATA", data: item.quoteText });
                 props.history.push("/quotes");
               }}
             >
-              <Card
-                loading={quotes.length === 0}
-                title={
-                  quotes.length === 0
-                    ? "Loading ..."
-                    : item.quoteAuthor || "Unknown"
-                }
-                bordered={true}
-                type={"inner"}
-                style={{
-                  height: 200,
-                  background:
-                    "#" + (((1 << 24) * Math.random()) | 0).toString(16)
-                }}
-              >
-                <h3>{item.quoteText}</h3>
-              </Card>
-            </List.Item>
-          )}
-        />
-      </Row> */}
+              <p>{item.quoteText}</p>
+            </Card>
+          ))}
+      </div>
     </Fragment>
   );
 };
