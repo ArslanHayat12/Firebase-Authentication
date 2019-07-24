@@ -43,7 +43,7 @@ const App = () => {
       wrappContent={Layout.Content}
       wrappLayoutClass="layout"
       wrappContentClass="content"
-      headerType="dynamic"
+      headerType="static"
       footerType="static"
     />
   );

@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useAfterAuth } from "../AuthProviders/AfterAuth";
 import { db } from "../config/index";
 import { List, Card, Row } from "antd";
+import "./../styles/index.css";
 const Dashboard = (props: any) => {
   const { dispatchAction, content } = useAfterAuth();
   const [quotes, setQuotes] = useState([]);
@@ -18,8 +19,32 @@ const Dashboard = (props: any) => {
   }, []);
   return (
     <Fragment>
+       <div className="main">
+        {quotes &&
+          quotes.length > 0 &&
+          quotes.map((val:any) => (
+            <Card
+              title={val.quoteAuthor}
+              extra={<a href="#">More</a>}
+              style={{
+                height: 200,
+                width:"23%",
+                margin:"1%",
+                background:
+                  "#" + (((1 << 24) * Math.random()) | 0).toString(16)
+              }}
+              onClick={() => {
+                dispatchAction({ type: "UPDATE_DATA", data: val.quoteText });
+                props.history.push("/quotes");
+              }}
+            >
+              <p>{val.quoteText}</p>
+            </Card>
+          ))}
+      
+      </div>
       {/* <h1>Logged In with: {JSON.stringify(content&&content.data, null, 3)}</h1> */}
-      <Row gutter={20}>
+      {/* <Row gutter={20}>
         <List
           grid={{
             gutter: 20,
@@ -88,7 +113,7 @@ const Dashboard = (props: any) => {
             </List.Item>
           )}
         />
-      </Row>
+      </Row> */}
     </Fragment>
   );
 };
