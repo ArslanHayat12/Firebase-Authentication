@@ -1,12 +1,19 @@
-import React, { useReducer, useEffect, useContext, useCallback } from "react";
+import React, {
+  useReducer,
+  useEffect,
+  useContext,
+  useCallback,
+  useState
+} from "react";
 import { reducer } from "../reducers/";
 import { initialContent, BeforeAuthContext } from "../context/";
 import Router from "../routes/Router";
 import { routesList, defaultRoute } from "../routes/routes";
-import { RoutesPropsBeforeAuthInterface } from "./../interfaces/";
+import { RoutesPropsInterface } from "./../interfaces/";
 
-const BeforeAuth = (props: RoutesPropsBeforeAuthInterface) => {
+const BeforeAuth = (props: RoutesPropsInterface) => {
   const [content, dispatch] = useReducer(reducer, initialContent);
+  const [error, setError] = useState({ message: null });
   const {
     onLoad,
     showFooterAfterAuth,
@@ -14,11 +21,12 @@ const BeforeAuth = (props: RoutesPropsBeforeAuthInterface) => {
     showHeaderAfterAuth,
     reducerPrivate,
     wrappContentClass,
-    headerFooterType,
+    headerFooterType
   } = props;
   useEffect(() => {
     onLoad &&
       onLoad((data: any) => {
+        console.log(data)
         dispatch({
           type: "UPDATE_DATA",
           isSignedIn: true,
@@ -29,11 +37,27 @@ const BeforeAuth = (props: RoutesPropsBeforeAuthInterface) => {
   const logout = useCallback(() => {
     dispatch({ type: "UPDATE_DATA", isSignedIn: false });
   }, []);
+  const signIn = useCallback((method: any) => {
+    return method
+      .then((res: any) => {
+        dispatch({
+          type: "UPDATE_DATA",
+          isSignedIn: true,
+          data: res
+        });
+      })
+      .catch((error: any) => {
+        setError(error);
+      });
+  }, []);
   return (
-    <BeforeAuthContext.Provider value={{ content, dispatch, logout }}>
-      {headerFooterType !== "dynamic" || headerFooterType !== "dynamic"? (
+    <BeforeAuthContext.Provider
+      value={{ content, dispatch, logout, signIn, error }}
+    >
+      {headerFooterType !== "dynamic" ? (
         <props.wrappLayout className={wrappLayoutClass || undefined}>
-          {content.isSignedIn && showHeaderAfterAuth && headerFooterType !== "dynamic"
+          {(content.isSignedIn &&
+          showHeaderAfterAuth )
             ? showHeaderAfterAuth()
             : null}
           <props.wrappContent className={wrappContentClass || undefined}>
@@ -49,7 +73,8 @@ const BeforeAuth = (props: RoutesPropsBeforeAuthInterface) => {
               {...props}
             />
           </props.wrappContent>
-          {content.isSignedIn && showFooterAfterAuth && headerFooterType !== "dynamic"
+          {content.isSignedIn &&
+          showFooterAfterAuth
             ? showFooterAfterAuth()
             : null}
         </props.wrappLayout>

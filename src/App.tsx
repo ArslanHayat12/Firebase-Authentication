@@ -16,11 +16,13 @@ const Head=({res}:any)=>{
     auth.signOut();
     logout();
   }, []);
+  console.log(content.data)
   return(
     <Header>
+      
         <span style={{float:"left",color:"white"}}>  Quotes App </span>
         <span style={{float:"right",color:"white"}}>{data&&data.data?JSON.stringify(data.data):"Static"}</span>
-        <span style={{float:"right",color:"white"}}> {content&&JSON.stringify(content.data)}<Button onClick={logoutAction}>Logout </Button> </span>
+        <span style={{float:"right",color:"white"}}> {content&&content.data && JSON.stringify(content.data.email ||content.data.user.email ||content.data.user.phoneNumber)} <Button onClick={logoutAction}>Logout </Button> </span>
        
     </Header>
   )
@@ -28,7 +30,8 @@ const Head=({res}:any)=>{
 const App = () => {
   const onLoad = (callback: any) => {
     const unsubscribe = auth.onAuthStateChanged((user: any) => {
-      if (user) callback(user && (user.email || user.phoneNumber));
+      console.log(user)
+      if (user) callback(user);
       unsubscribe();
     });
   };

@@ -1,31 +1,24 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import InputForm from "../InputForm";
 import { auth, firebase } from "../../config/index";
-import { BeforeAuthContext } from "../../context/";
+import { useBeforeAuth } from "../../AuthProviders/BeforeAuth";
 const SignIn = React.memo((props: any) => {
-  const { dispatch } = useContext(BeforeAuthContext);
-  const [error, setError] = useState({ message: null });
-  const signIn = useCallback((data: any) => {
+  const { error, signIn } = useBeforeAuth();
+
+  const signInAction = useCallback((data: any) => {
     const credential = firebase.auth.PhoneAuthProvider.credential(
       props.location.state.verificationId,
       data.code
     );
-
-    return auth
-      .signInWithCredential(credential)
-      .then((res: any) => {
-        dispatch({ type: "UPDATE_DATA", isSignedIn: true,data:res.user && (res.user.email||res.user.phoneNumber) });
-      })
-      .catch((error: any) => {
-        setError(error);
-      });
+    return signIn(auth.signInWithCredential(credential));
   }, []);
+  
   return (
     <InputForm
       title="Sign In"
       redirect="/signup"
       message="Register Now"
-      action={signIn}
+      action={signInAction}
       {...props}
       authType="/signin"
       authMessage="Signin through email and password"

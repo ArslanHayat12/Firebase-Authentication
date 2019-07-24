@@ -1,14 +1,14 @@
 import { RouteProps } from "react-router-dom";
-import { functions } from "firebase";
+import { defaultRoutesTypes,routesType,headerFooterType } from "../types/";
 export interface RoutesPropsInterface extends RouteProps {
-  routesList: any;
+  routesList: routesType[];
   isSignedIn?: boolean;
-  defaultRoute: any;
+  defaultRoute: defaultRoutesTypes;
   initialContent: any;
   reducerPrivate: any;
   onLoad?: (callback: any) => void;
-  headerFooterType?:string;
-  showHeaderAfterAuth?: (data?:any) => void;
+  headerFooterType?: headerFooterType;
+  showHeaderAfterAuth?: (data?: any) => void;
   showFooterAfterAuth?: () => void;
   wrappContent: React.ComponentClass<BasicProps, any> | string;
   wrappLayout: React.ComponentClass<BasicProps, any> | string;
@@ -18,12 +18,5 @@ export interface RoutesPropsInterface extends RouteProps {
 export interface BasicProps extends React.HTMLAttributes<HTMLDivElement> {
   prefixCls?: string;
   hasSider?: boolean;
-  className?:string|undefined;
-}
-export interface RoutesPropsBeforeAuthInterface extends RoutesPropsInterface {
-  wrappContent: React.ComponentClass<BasicProps, any> | string;
-  wrappLayout: React.ComponentClass<BasicProps, any> | string;
-  wrappLayoutClass?: string;
-  wrappContentClass?: string;
- 
+  className?: string | undefined;
 }
