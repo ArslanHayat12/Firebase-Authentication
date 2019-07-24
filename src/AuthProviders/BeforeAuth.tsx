@@ -26,7 +26,6 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
   useEffect(() => {
     onLoad &&
       onLoad((data: any) => {
-        console.log(data)
         dispatch({
           type: "UPDATE_DATA",
           isSignedIn: true,

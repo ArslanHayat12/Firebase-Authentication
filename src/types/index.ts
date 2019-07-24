@@ -4,12 +4,12 @@ export type BeforeAuthContextType = {
   isSignedIn?: boolean | undefined;
   data?: any;
   logout?: any;
-  signIn?: (data?: any) => any;
+  signIn?: any;
   error?: any;
 };
 
 export type AfterAuthContextType = BeforeAuthContextType & {
-  dispatchAction?: (data?: any) => void;
+  dispatchAction?:any;
 };
 
 export type defaultRoutesTypes = {
