@@ -3,7 +3,7 @@ import SignUp from "./../components/Authentication/SignUp";
 import PhoneSignIn from "./../components/Authentication/PhoneSignIn";
 import CodeVerification from "./../components/Authentication/CodeVerification";
 import Dashboard from "./../components/Dashboard";
-import Quotes from "../components/Quotes";
+import Places from "../components/Places";
 
 export const routesList = [
   {
@@ -29,7 +29,7 @@ export const routesList = [
   },
   {
     path: "/quotes",
-    component: Quotes,
+    component: Places,
     private: true
   }
 ];

@@ -3,22 +3,26 @@ import { useAfterAuth } from "../AuthProviders/AfterAuth";
 import { db } from "../config/index";
 import { Card } from "antd";
 import "./../styles/index.css";
+import axios from "axios";
+import { jsonData } from "../myfile";
 const Dashboard = (props: any) => {
   const { dispatchAction, content } = useAfterAuth();
-  const [quotes, setQuotes] = useState([]);
+  const [places, setPlaces] = useState<any>([]);
   // const logoutAction = useCallback(() => {
   //   auth.signOut();
   //   logout();
   // }, []);
   useEffect(() => {
-    db.ref()
-      .limitToFirst(100)
-      .on("value", (snapshot: any) => {
-        setQuotes(snapshot.val());
-      });
-  }, []);
-  const quotesData =
-    quotes.length === 0
+    if (places.length === 0) setPlaces(jsonData);
+    //console.log(jsonData)
+    // db.ref()
+    //   .limitToFirst(100)
+    //   .on("value", (snapshot: any) => {
+    //     setplaces(snapshot.val());
+    //   });
+  }, [jsonData]);
+  const placesData =
+    places.length === 0
       ? [
           1,
           2,
@@ -45,33 +49,49 @@ const Dashboard = (props: any) => {
           23,
           24
         ]
-      : quotes;
+      : places;
   return (
     <Fragment>
       <div className="main">
-        {quotesData &&
-          quotesData.length > 0 &&
-          quotesData.map((item: any) => (
+        {placesData &&
+          placesData.length > 0 &&
+          placesData.map((item: any) => (
             <Card
-              loading={quotes.length === 0}
+              loading={places.length === 0}
               title={
-                quotes.length === 0
-                  ? "Loading ..."
-                  : item.quoteAuthor || "Unknown"
+                places.length === 0 ? "Loading ..." : item.title || "Unknown"
               }
-              extra={<a href="#">More</a>}
-              style={{
-                height: "300",
-                width: "23%",
-                margin: "1%",
-                background: "#" + (((1 << 24) * Math.random()) | 0).toString(16)
-              }}
+              className="resource-card"
+              // style={{
+              //   height: "300",
+              //   width: "23%",
+              //   margin: "1%",
+              //   background: "#" + (((1 << 24) * Math.random()) | 0).toString(16)
+              // }}
               onClick={() => {
-                dispatchAction({ type: "UPDATE_DATA", data: item.quoteText });
-                props.history.push("/quotes");
+                if (item.image) {
+                  dispatchAction({ type: "UPDATE_DATA", data: item });
+                  props.history.push("/quotes");
+                }
               }}
+              cover={
+                item.image ? (
+                  <img
+                    alt="example"
+                    style={{
+                      width: "23%",
+                      margin: "1%",
+                      float: "right",
+                      height: "100px"
+                    }}
+                    src={item.image}
+                  />
+                ) : null
+              }
             >
-              <p>{item.quoteText}</p>
+              <p>
+                {item.description ? item.description.substring(0, 300) : ""}
+              </p>
             </Card>
           ))}
       </div>

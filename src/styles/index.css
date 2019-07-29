@@ -14,20 +14,64 @@
   background: azure;
 }
 .ant-layout-header {
-  background: cornflowerblue;
+  background: lightseagreen;
 }
 .ant-layout-footer {
-  background: cornflowerblue;
+  background: lightseagreen;
 }
 .content {
   overflow-y: scroll;
   height: 800px;
   background: white;
 }
-.layout{
+.layout {
   height: 100vh;
 }
-.main{
+.main {
   display: flex;
   flex-wrap: wrap;
+}
+
+.gutter-example .ant-row > div {
+  background: transparent;
+  border: 0;
+}
+.gutter-box {
+  background: #00a0e9;
+  padding: 5px 0;
+  height: 300px;
+}
+.ant-row {
+  width: 100%;
+  margin: 0 !important;
+}
+.contentHeader {
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  background: rgb(4, 34, 58);
+  color: white;
+  font-size: medium;
+}
+
+.resource-card {
+  min-width: 23%;
+  max-width: 23%;
+  height: 300;
+  margin: 1%;
+  overflow: hidden;
+  color: #777;
+  font-size: 12px;
+  border: 1px solid #d9d9d9;
+  /* border-radius: 4px; */
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.resource-card:hover{
+
+font-size: 20px;
+}
+
+.loading {
+  background: transparent url('http://thinkfuture.com/wp-content/uploads/2013/10/loading_spinner.gif') center no-repeat;
 }

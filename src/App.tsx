@@ -8,6 +8,7 @@ import { reducerPrivate } from "./reducers/";
 import { Layout,Button } from "antd";
 import "antd/dist/antd.css";
 import "./styles/index.css";
+import logo from "./styles/logo.png";
 const { Header, Footer } = Layout;
 const Head=({res}:any)=>{
   const {  logout,content } = useBeforeAuth();
@@ -20,8 +21,7 @@ const Head=({res}:any)=>{
   return(
     <Header>
       
-        <span style={{float:"left",color:"white"}}>  Quotes App </span>
-        <span style={{float:"right",color:"white"}}>{data&&data.data?JSON.stringify(data.data):"Static"}</span>
+        <h1 style={{float:"left",color:"white"}}><img src={logo} height="70" width="70"/> {data&&data.data?": "+JSON.stringify(data.data.title):""}</h1>
         <span style={{float:"right",color:"white"}}> {content&&content.data && JSON.stringify(content.data.email ||(content.data.user&&(content.data.user.email ||content.data.user.phoneNumber)))} <Button onClick={logoutAction}>Logout </Button> </span>
        
     </Header>
