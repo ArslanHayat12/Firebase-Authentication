@@ -10,6 +10,7 @@ import { initialContent, BeforeAuthContext } from "../context/";
 import Router from "../routes/Router";
 import { routesList, defaultRoute } from "../routes/routes";
 import { RoutesPropsInterface } from "./../interfaces/";
+import "../styles/index.css";
 
 const BeforeAuth = (props: RoutesPropsInterface) => {
   const [content, dispatch] = useReducer(reducer, initialContent);
@@ -28,7 +29,7 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
       onLoad((data: any) => {
         dispatch({
           type: "UPDATE_DATA",
-          isSignedIn: true,
+          isSignedIn: data ? true : false,
           data: data
         });
       });
@@ -53,10 +54,10 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
     <BeforeAuthContext.Provider
       value={{ content, dispatch, logout, signIn, error }}
     >
-      {headerFooterType !== "dynamic" ? (
+      {typeof content.isSignedIn==="boolean"?
+      headerFooterType !== "dynamic" ? (
         <props.wrappLayout className={wrappLayoutClass || undefined}>
-          {(content.isSignedIn &&
-          showHeaderAfterAuth )
+          {content.isSignedIn && showHeaderAfterAuth
             ? showHeaderAfterAuth()
             : null}
           <props.wrappContent className={wrappContentClass || undefined}>
@@ -72,8 +73,7 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
               {...props}
             />
           </props.wrappContent>
-          {content.isSignedIn &&
-          showFooterAfterAuth
+          {content.isSignedIn && showFooterAfterAuth
             ? showFooterAfterAuth()
             : null}
         </props.wrappLayout>
@@ -89,7 +89,7 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
           headerFooterType={headerFooterType}
           {...props}
         />
-      )}
+      ):(<div className="loader"></div>)}
     </BeforeAuthContext.Provider>
   );
 };

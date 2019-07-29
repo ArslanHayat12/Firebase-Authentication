@@ -4,6 +4,8 @@ import PhoneSignIn from "./../components/Authentication/PhoneSignIn";
 import CodeVerification from "./../components/Authentication/CodeVerification";
 import Dashboard from "./../components/Dashboard";
 import Quotes from "../components/Quotes";
+import NotFound from "../components/Errors/NotFound";
+import PermissionDenied from "../components/Errors/PermissionDenied";
 
 export const routesList = [
   {
@@ -31,11 +33,21 @@ export const routesList = [
     path: "/quotes",
     component: Quotes,
     private: true
+  },
+  {
+    path: "/notfound",
+    component: NotFound
+  },
+  {
+    path: "/forbidden",
+    component: PermissionDenied
   }
 ];
 export const defaultRoute= {
   failurePath: "/signin",
-  successPath:"/dashboard"
+  successPath:"/dashboard",
+  notFoundPath:"/notfound",
+  permissionDeniedPath:"/forbidden",
 };
 
 

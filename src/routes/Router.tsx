@@ -37,7 +37,7 @@ const Routes = (props: RoutesPropsInterface) => {
               {routesList.map((x: any, i: any) => {
                 const { path, component } = x;
 
-                if (x.private && isSignedIn) {
+                if (x.private && (isSignedIn || isSignedIn===undefined )) {
                   return (
                     <Switch key={i}>
                       {x.private ? (
@@ -64,9 +64,8 @@ const Routes = (props: RoutesPropsInterface) => {
                 }
               })}
               {!isPathExists(routesList, window.location.pathname) ? (
-                <Redirect to={defaultRoute.failurePath} />
-              ) : null}
-              {isSignedIn ? (
+                <Redirect to={defaultRoute.notFoundPath} />
+              ) : isSignedIn ? (
                 <Redirect to={defaultRoute.successPath} />
               ) : (
                 <Redirect to={defaultRoute.failurePath} />

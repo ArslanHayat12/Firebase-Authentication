@@ -1,36 +1,20 @@
-import React,{useCallback} from "react";
+import React from "react";
 import { routesList, defaultRoute } from "./routes/routes";
 import { auth } from "./config/index";
-import BeforeAuth, { useBeforeAuth } from "./AuthProviders/BeforeAuth";
-import { useAfterAuth } from "./AuthProviders/AfterAuth";
+import BeforeAuth from "./AuthProviders/BeforeAuth";
 import { initialContent } from "./context/";
 import { reducerPrivate } from "./reducers/";
-import { Layout,Button } from "antd";
+import { Layout } from "antd";
+import Header from "./components/Header";
+import Footer from "./components/Footer"
 import "antd/dist/antd.css";
 import "./styles/index.css";
-const { Header, Footer } = Layout;
-const Head=({res}:any)=>{
-  const {  logout,content } = useBeforeAuth();
-  const {  data,dispatchAction } = useAfterAuth();
-  const logoutAction = useCallback(() => {
-    auth.signOut();
-    dispatchAction({type: "UPDATE_DATA", data:{} })
-    logout();
-  }, []);
-  return(
-    <Header>
-      
-        <span style={{float:"left",color:"white"}}>  Quotes App </span>
-        <span style={{float:"right",color:"white"}}>{data&&data.data?JSON.stringify(data.data):"Static"}</span>
-        <span style={{float:"right",color:"white"}}> {content&&content.data && JSON.stringify(content.data.email ||(content.data.user&&(content.data.user.email ||content.data.user.phoneNumber)))} <Button onClick={logoutAction}>Logout </Button> </span>
-       
-    </Header>
-  )
-}
+
 const App = () => {
   const onLoad = (callback: any) => {
     const unsubscribe = auth.onAuthStateChanged((user: any) => {
       if (user) callback(user);
+      else  callback(null);
       unsubscribe();
     });
   };
@@ -42,7 +26,7 @@ const App = () => {
       onLoad={onLoad}
       initialContent={initialContent}
       reducerPrivate={reducerPrivate}
-      showHeaderAfterAuth={(res:any)=><Head res={res}/>}
+      showHeaderAfterAuth={(res:any)=><Header res={res}/>}
       showFooterAfterAuth={() => <Footer />}
       wrappLayout={Layout}
       wrappContent={Layout.Content}

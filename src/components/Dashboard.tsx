@@ -4,7 +4,7 @@ import { db } from "../config/index";
 import { Card } from "antd";
 import "./../styles/index.css";
 const Dashboard = (props: any) => {
-  const { dispatchAction, content } = useAfterAuth();
+  const { dispatchAction } = useAfterAuth();
   const [quotes, setQuotes] = useState([]);
   // const logoutAction = useCallback(() => {
   //   auth.signOut();
@@ -59,7 +59,6 @@ const Dashboard = (props: any) => {
                   ? "Loading ..."
                   : item.quoteAuthor || "Unknown"
               }
-              extra={<a href="#">More</a>}
               style={{
                 height: "300",
                 width: "23%",
