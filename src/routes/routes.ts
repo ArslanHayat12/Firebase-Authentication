@@ -32,7 +32,8 @@ export const routesList = [
   {
     path: "/quotes",
     component: Quotes,
-    private: true
+    private: true,
+    roles:["Editor"]
   },
   {
     path: "/notfound",

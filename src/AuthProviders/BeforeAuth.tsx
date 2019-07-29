@@ -22,15 +22,18 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
     showHeaderAfterAuth,
     reducerPrivate,
     wrappContentClass,
-    headerFooterType
+    headerFooterType,
+    rolesList
+    
   } = props;
   useEffect(() => {
     onLoad &&
       onLoad((data: any) => {
         dispatch({
           type: "UPDATE_DATA",
-          isSignedIn: data ? true : false,
-          data: data
+          isSignedIn: data && data.data ? true : false,
+          data: data && data.data,
+          role: data && data.role
         });
       });
   }, []);
@@ -43,7 +46,8 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
         dispatch({
           type: "UPDATE_DATA",
           isSignedIn: true,
-          data: res
+          data: res,
+          role: "Administrator"
         });
       })
       .catch((error: any) => {
@@ -54,42 +58,50 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
     <BeforeAuthContext.Provider
       value={{ content, dispatch, logout, signIn, error }}
     >
-      {typeof content.isSignedIn==="boolean"?
-      headerFooterType !== "dynamic" ? (
-        <props.wrappLayout className={wrappLayoutClass || undefined}>
-          {content.isSignedIn && showHeaderAfterAuth
-            ? showHeaderAfterAuth()
-            : null}
-          <props.wrappContent className={wrappContentClass || undefined}>
-            <Router
-              routesList={routesList}
-              isSignedIn={content.isSignedIn}
-              defaultRoute={defaultRoute}
-              initialContent={initialContent}
-              reducerPrivate={reducerPrivate}
-              showHeaderAfterAuth={showHeaderAfterAuth}
-              showFooterAfterAuth={showFooterAfterAuth}
-              headerFooterType={headerFooterType}
-              {...props}
-            />
-          </props.wrappContent>
-          {content.isSignedIn && showFooterAfterAuth
-            ? showFooterAfterAuth()
-            : null}
-        </props.wrappLayout>
+      {typeof content.isSignedIn === "boolean" ? (
+        headerFooterType !== "dynamic" ? (
+          <props.wrappLayout className={wrappLayoutClass || undefined}>
+            {content.isSignedIn && showHeaderAfterAuth
+              ? showHeaderAfterAuth()
+              : null}
+            <props.wrappContent className={wrappContentClass || undefined}>
+              
+              <Router
+                routesList={routesList}
+                isSignedIn={content.isSignedIn}
+                role={content.role}
+                rolesList={rolesList}
+                defaultRoute={defaultRoute}
+                initialContent={initialContent}
+                reducerPrivate={reducerPrivate}
+                showHeaderAfterAuth={showHeaderAfterAuth}
+                showFooterAfterAuth={showFooterAfterAuth}
+                headerFooterType={headerFooterType}
+                {...props}
+              />
+            </props.wrappContent>
+            {content.isSignedIn && showFooterAfterAuth
+              ? showFooterAfterAuth()
+              : null}
+          </props.wrappLayout>
+        ) : (
+          <Router
+            routesList={routesList}
+            isSignedIn={content.isSignedIn}
+            defaultRoute={defaultRoute}
+            initialContent={initialContent}
+            reducerPrivate={reducerPrivate}
+            showHeaderAfterAuth={showHeaderAfterAuth}
+            showFooterAfterAuth={showFooterAfterAuth}
+            headerFooterType={headerFooterType}
+            role={content.role}
+            rolesList={rolesList}
+            {...props}
+          />
+        )
       ) : (
-        <Router
-          routesList={routesList}
-          isSignedIn={content.isSignedIn}
-          defaultRoute={defaultRoute}
-          initialContent={initialContent}
-          reducerPrivate={reducerPrivate}
-          showHeaderAfterAuth={showHeaderAfterAuth}
-          showFooterAfterAuth={showFooterAfterAuth}
-          headerFooterType={headerFooterType}
-          {...props}
-        />
-      ):(<div className="loader"></div>)}
+        <div className="loader" />
+      )}
     </BeforeAuthContext.Provider>
   );
 };

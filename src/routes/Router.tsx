@@ -21,10 +21,13 @@ const Routes = (props: RoutesPropsInterface) => {
     showHeaderAfterAuth,
     headerFooterType,
     wrappLayoutClass,
-    wrappContentClass
+    wrappContentClass,
+    role,
+    rolesList
   } = props;
 
   const [data, dispatchAction] = useReducer(reducerPrivate, initialContent);
+  let newPath: any = [];
   return (
     <Fragment>
       <AfterAuth data={data} dispatchAction={dispatchAction}>
@@ -35,9 +38,18 @@ const Routes = (props: RoutesPropsInterface) => {
           <props.wrappContent className={wrappContentClass || undefined}>
             <Router>
               {routesList.map((x: any, i: any) => {
-                const { path, component } = x;
+                const { path, component, roles } = x;
+                if (
+                  (rolesList &&
+                    rolesList.length &&
+                    (roles && roles.length && roles.includes(role))) ||
+                  !roles
+                ) {
+                } else {
+                  newPath.push(path);
+                }
 
-                if (x.private && (isSignedIn || isSignedIn===undefined )) {
+                if (x.private && (isSignedIn || isSignedIn === undefined)) {
                   return (
                     <Switch key={i}>
                       {x.private ? (
@@ -70,6 +82,9 @@ const Routes = (props: RoutesPropsInterface) => {
               ) : (
                 <Redirect to={defaultRoute.failurePath} />
               )}
+              {newPath.includes(window.location.pathname) ? (
+                <Redirect to={defaultRoute.permissionDeniedPath} />
+              ) : null}
             </Router>
           </props.wrappContent>
           {isSignedIn && showFooterAfterAuth && headerFooterType === "dynamic"

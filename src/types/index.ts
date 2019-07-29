@@ -1,5 +1,6 @@
 export type BeforeAuthContextType = {
-  content?: any;
+  content?: any;  
+  role?:string;
   dispatch?: (data?: any) => void;
   isSignedIn?: boolean | undefined;
   data?: any;

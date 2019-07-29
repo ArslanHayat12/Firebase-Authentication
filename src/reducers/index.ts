@@ -5,7 +5,8 @@ export const reducer=(state:any, action:any)=>{
       case UPDATE_DATA:
         return {
           isSignedIn: action.isSignedIn,
-          data:action.data
+          data:action.data,
+          role:action.role
         }
       default:
         return initialContent

@@ -1,5 +1,6 @@
 import React from "react";
 import { routesList, defaultRoute } from "./routes/routes";
+import { Roles } from "./routes/roles";
 import { auth } from "./config/index";
 import BeforeAuth from "./AuthProviders/BeforeAuth";
 import { initialContent } from "./context/";
@@ -13,7 +14,7 @@ import "./styles/index.css";
 const App = () => {
   const onLoad = (callback: any) => {
     const unsubscribe = auth.onAuthStateChanged((user: any) => {
-      if (user) callback(user);
+      if (user) callback({data:user,role:"Administrator"});
       else  callback(null);
       unsubscribe();
     });
@@ -33,6 +34,7 @@ const App = () => {
       wrappLayoutClass="layout"
       wrappContentClass="content"
       headerFooterType="dynamic"
+      rolesList={Roles}
     />
   );
 };

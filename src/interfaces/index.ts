@@ -14,6 +14,8 @@ export interface RoutesPropsInterface extends RouteProps {
   wrappLayout: React.ComponentClass<BasicProps, any> | string;
   wrappLayoutClass?: string;
   wrappContentClass?: string;
+  rolesList?:any,
+  role?:string
 }
 export interface BasicProps extends React.HTMLAttributes<HTMLDivElement> {
   prefixCls?: string;
