@@ -27,6 +27,10 @@ const Routes = (props: RoutesPropsInterface) => {
   } = props;
 
   const [data, dispatchAction] = useReducer(reducerPrivate, initialContent);
+  const isSecuredPath = routesList
+    .filter((x: any) => x.private === true)
+    .map((x: any) => x.path)
+    .includes(window.location.pathname);
   let newPath: any = [];
   return (
     <Fragment>
@@ -78,7 +82,13 @@ const Routes = (props: RoutesPropsInterface) => {
               {!isPathExists(routesList, window.location.pathname) ? (
                 <Redirect to={defaultRoute.notFoundPath} />
               ) : isSignedIn ? (
-                <Redirect to={defaultRoute.successPath} />
+                <Redirect
+                  to={
+                    isSecuredPath
+                      ? window.location.pathname
+                      : defaultRoute.successPath
+                  }
+                />
               ) : (
                 <Redirect to={defaultRoute.failurePath} />
               )}
