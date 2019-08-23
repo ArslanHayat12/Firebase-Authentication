@@ -6,7 +6,6 @@ import Dashboard from "./../components/Dashboard";
 import Quotes from "../components/Quotes";
 import NotFound from "../components/Errors/NotFound";
 import PermissionDenied from "../components/Errors/PermissionDenied";
-import Test from "../components/Test";
 
 export const routesList = [
   {
