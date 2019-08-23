@@ -47,7 +47,7 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
           type: "UPDATE_DATA",
           isSignedIn: true,
           data: res,
-          role: "Administrator"
+          role: res && res.role
         });
       })
       .catch((error: any) => {

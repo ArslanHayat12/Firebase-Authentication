@@ -13,6 +13,7 @@ import "./styles/index.css";
 
 const App = () => {
   const onLoad = (callback: any) => {
+    // callback({data:{user:{email:"test124@g.com"},role:"Administrator"}})
     const unsubscribe = auth.onAuthStateChanged((user: any) => {
       if (user) callback({data:user,role:"Administrator"});
       else  callback(null);
