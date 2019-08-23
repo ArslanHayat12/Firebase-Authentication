@@ -34,74 +34,66 @@ const Routes = (props: RoutesPropsInterface) => {
   let newPath: any = [];
   return (
     <Fragment>
-      <AfterAuth data={data} dispatchAction={dispatchAction}>
-        <props.wrappLayout className={wrappLayoutClass || undefined}>
-          {isSignedIn && showHeaderAfterAuth && headerFooterType === "dynamic"
-            ? showHeaderAfterAuth()
-            : null}
-          <props.wrappContent className={wrappContentClass || undefined}>
-            <Router>
-              {routesList.map((x: any, i: any) => {
-                const { path, component, roles } = x;
-                if (
-                  (rolesList &&
-                    rolesList.length &&
-                    (roles && roles.length && roles.includes(role))) ||
-                  !roles
-                ) {
-                } else {
-                  newPath.push(path);
-                }
+      <props.wrappLayout className={wrappLayoutClass || undefined}>
+        {isSignedIn && showHeaderAfterAuth && headerFooterType === "dynamic" ? (
+          <AfterAuth data={data} dispatchAction={dispatchAction}>
+            {showHeaderAfterAuth()}
+          </AfterAuth>
+        ) : null}
+        <props.wrappContent className={wrappContentClass || undefined}>
+          <Router>
+            {routesList.map((x: any, i: any) => {
+              const { path, component, roles } = x;
+              if (
+                (rolesList &&
+                  rolesList.length &&
+                  (roles && roles.length && roles.includes(role))) ||
+                !roles
+              ) {
+              } else {
+                newPath.push(path);
+              }
 
-                if (x.private && (isSignedIn || isSignedIn === undefined)) {
-                  return (
-                    <Switch key={i}>
-                      {x.private ? (
-                        <PrivateRoute
-                          exact={true}
-                          path={path}
-                          component={component}
-                          isSignedIn={isSignedIn}
-                          failurePath={defaultRoute.failurePath}
-                        />
-                      ) : /* {showFooterAfterAuth && footerType === "dynamic"
-                      ? showFooterAfterAuth()
-                      : null} */
-
-                      null}
-                    </Switch>
-                  );
-                } else {
-                  return (
-                    <Switch key={i}>
-                      <Route exact={true} path={path} component={component} />
-                    </Switch>
-                  );
+              if (x.private && (isSignedIn || isSignedIn === undefined)) {
+                return (
+                  <AfterAuth data={data} dispatchAction={dispatchAction}>
+                    <PrivateRoute
+                      exact={true}
+                      path={path}
+                      component={component}
+                      isSignedIn={isSignedIn}
+                      failurePath={defaultRoute.failurePath}
+                    />
+                  </AfterAuth>
+                );
+              } else {
+                return <Route exact={true} path={path} component={component} />;
+              }
+            })}
+            {!isPathExists(routesList, window.location.pathname) ? (
+              <Redirect to={defaultRoute.notFoundPath} />
+            ) : isSignedIn ? (
+              <Redirect
+                to={
+                  isSecuredPath
+                    ? window.location.pathname
+                    : defaultRoute.successPath
                 }
-              })}
-              {!isPathExists(routesList, window.location.pathname) ? (
-                <Redirect to={defaultRoute.notFoundPath} />
-              ) : isSignedIn ? (
-                <Redirect
-                  to={
-                    isSecuredPath
-                      ? window.location.pathname
-                      : defaultRoute.successPath
-                  }
-                />
-              ) : (
-                <Redirect to={defaultRoute.failurePath} />
-              )}
-              {newPath.includes(window.location.pathname) ? (
-                <Redirect to={defaultRoute.permissionDeniedPath} />
-              ) : null}
-            </Router>
-          </props.wrappContent>
-          {isSignedIn && showFooterAfterAuth && headerFooterType === "dynamic"
-            ? showFooterAfterAuth()
-            : null}
-        </props.wrappLayout>
-      </AfterAuth>
+              />
+            ) : (
+              <Redirect to={defaultRoute.failurePath} />
+            )}
+            {newPath.includes(window.location.pathname) ? (
+              <Redirect to={defaultRoute.permissionDeniedPath} />
+            ) : null}
+          </Router>
+        </props.wrappContent>
+        {isSignedIn && showFooterAfterAuth && headerFooterType === "dynamic" ? (
+          <AfterAuth data={data} dispatchAction={dispatchAction}>
+            {showFooterAfterAuth()}
+          </AfterAuth>
+        ) : null}
+      </props.wrappLayout>
     </Fragment>
   );
 };
