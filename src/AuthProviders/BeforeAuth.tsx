@@ -24,8 +24,8 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
     wrappContentClass,
     headerFooterType,
     rolesList
-    
   } = props;
+
   useEffect(() => {
     onLoad &&
       onLoad((data: any) => {
@@ -37,9 +37,13 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
         });
       });
   }, []);
+
+  //Logout Method
   const logout = useCallback(() => {
     dispatch({ type: "UPDATE_DATA", isSignedIn: false });
   }, []);
+
+  //SignIn
   const signIn = useCallback((method: any) => {
     return method
       .then((res: any) => {
@@ -54,6 +58,25 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
         setError(error);
       });
   }, []);
+
+
+  const routerComponent = () => (
+    <Router
+      routesList={routesList}
+      isSignedIn={content.isSignedIn}
+      role={content.role}
+      rolesList={rolesList}
+      defaultRoute={defaultRoute}
+      initialContent={initialContent}
+      reducerPrivate={reducerPrivate}
+      showHeaderAfterAuth={showHeaderAfterAuth}
+      showFooterAfterAuth={showFooterAfterAuth}
+      headerFooterType={headerFooterType}
+      {...props}
+    />
+  );
+
+
   return (
     <BeforeAuthContext.Provider
       value={{ content, dispatch, logout, signIn, error }}
@@ -65,39 +88,14 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
               ? showHeaderAfterAuth()
               : null}
             <props.wrappContent className={wrappContentClass || undefined}>
-              
-              <Router
-                routesList={routesList}
-                isSignedIn={content.isSignedIn}
-                role={content.role}
-                rolesList={rolesList}
-                defaultRoute={defaultRoute}
-                initialContent={initialContent}
-                reducerPrivate={reducerPrivate}
-                showHeaderAfterAuth={showHeaderAfterAuth}
-                showFooterAfterAuth={showFooterAfterAuth}
-                headerFooterType={headerFooterType}
-                {...props}
-              />
+             {routerComponent()}
             </props.wrappContent>
             {content.isSignedIn && showFooterAfterAuth
               ? showFooterAfterAuth()
               : null}
           </props.wrappLayout>
         ) : (
-          <Router
-            routesList={routesList}
-            isSignedIn={content.isSignedIn}
-            defaultRoute={defaultRoute}
-            initialContent={initialContent}
-            reducerPrivate={reducerPrivate}
-            showHeaderAfterAuth={showHeaderAfterAuth}
-            showFooterAfterAuth={showFooterAfterAuth}
-            headerFooterType={headerFooterType}
-            role={content.role}
-            rolesList={rolesList}
-            {...props}
-          />
+          routerComponent()
         )
       ) : (
         <div className="loader" />
@@ -105,5 +103,6 @@ const BeforeAuth = (props: RoutesPropsInterface) => {
     </BeforeAuthContext.Provider>
   );
 };
+
 export default BeforeAuth;
 export const useBeforeAuth = () => useContext(BeforeAuthContext);
