@@ -28,15 +28,11 @@ export const routesList = [
     private: true
   },
   {
-    path: "/quotes",
-    component: Places,
-    private: true
+    path: "/places",
+    component: Places
   }
 ];
-export const defaultRoute= {
-  failurePath: "/signin",
-  successPath:"/dashboard"
+export const defaultRoute = {
+  failurePath: "/dashboard",
+  successPath: "/dashboard"
 };
-
-
-

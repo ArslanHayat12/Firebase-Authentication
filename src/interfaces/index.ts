@@ -1,9 +1,9 @@
 import { RouteProps } from "react-router-dom";
-import { defaultRoutesTypes,routesType,headerFooterType } from "../types/";
+import { defaultRoutesTypes, routesType, headerFooterType } from "../types/";
 export interface RoutesPropsInterface extends RouteProps {
   routesList: routesType[];
   isSignedIn?: boolean;
-  defaultRoute: defaultRoutesTypes;
+  defaultRoute?: defaultRoutesTypes;
   initialContent: any;
   reducerPrivate: any;
   onLoad?: (callback: any) => void;

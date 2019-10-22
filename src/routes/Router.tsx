@@ -46,13 +46,9 @@ const Routes = (props: RoutesPropsInterface) => {
                           path={path}
                           component={component}
                           isSignedIn={isSignedIn}
-                          failurePath={defaultRoute.failurePath}
+                          failurePath={defaultRoute && defaultRoute.failurePath}
                         />
-                      ) : /* {showFooterAfterAuth && footerType === "dynamic"
-                      ? showFooterAfterAuth()
-                      : null} */
-
-                      null}
+                      ) : null}
                     </Switch>
                   );
                 } else {
@@ -64,12 +60,18 @@ const Routes = (props: RoutesPropsInterface) => {
                 }
               })}
               {!isPathExists(routesList, window.location.pathname) ? (
-                <Redirect to={defaultRoute.failurePath} />
+                <Redirect
+                  to={(defaultRoute && defaultRoute.failurePath) || "/"}
+                />
               ) : null}
               {isSignedIn ? (
-                <Redirect to={defaultRoute.successPath} />
+                <Redirect
+                  to={(defaultRoute && defaultRoute.successPath) || "/"}
+                />
               ) : (
-                <Redirect to={defaultRoute.failurePath} />
+                <Redirect
+                  to={(defaultRoute && defaultRoute.failurePath) || "/"}
+                />
               )}
             </Router>
           </props.wrappContent>

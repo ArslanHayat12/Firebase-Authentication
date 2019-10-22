@@ -9,7 +9,7 @@ export type BeforeAuthContextType = {
 };
 
 export type AfterAuthContextType = BeforeAuthContextType & {
-  dispatchAction?:any;
+  dispatchAction?: any;
 };
 
 export type defaultRoutesTypes = {

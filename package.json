@@ -37,6 +37,7 @@
     "page": "^1.11.4",
     "randomcolor": "^0.5.4",
     "react": "^16.8.6",
+    "react-adsense-ad": "^3.4.0",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
